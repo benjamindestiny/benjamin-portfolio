@@ -1,0 +1,366 @@
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { ExternalLink, Github, X, Sparkles, Eye, Code } from "lucide-react";
+
+const projects = [
+  {
+    title: "FGBN",
+    desc: "A real time Bank Application where users can withdraw , deposit money",
+    tech: ["HTML", "CSS", "JavaScript", "Firebase", "Git"],
+    color: "oklch(0.65 0.25 265 / 20%)",
+    liveLink: "#",
+    githubLink: "#",
+  },
+  {
+    title: "Vella",
+    desc: "A real-time school AI Agent that guides students and instructors on what they should know.",
+    tech: ["React", "Tailwind CSS", "Framer Motion", "Git", "TypeScript", "Node Js"],
+    color: "oklch(0.65 0.25 265 / 20%)",
+    liveLink: "#",
+    githubLink: "#",
+  },
+  {
+    title: "Portfolio Website",
+    desc: "A sleek personal portfolio with smooth animations and dark theme.",
+    tech: ["React", "Tailwind CSS", "Git", "Framer Motion"],
+    color: "oklch(0.65 0.25 265 / 20%)",
+    liveLink: "#",
+    githubLink: "#",
+  },
+  {
+    title: "Quiz App",
+    desc: "Interactive quiz platform with real-time scoring and leaderboards.",
+    tech: ["React", "Vercel", "Git"],
+    color: "oklch(0.6 0.28 300 / 20%)",
+    liveLink: "#",
+    githubLink: "#",
+  },
+  {
+    title: "My Romance",
+    desc: "A quiz based couples app where they know each other better using tricky questions.",
+    tech: ["React", "MongoDB", "Express", "Node.Js", "Git", "Stripe", "Railway"],
+    color: "oklch(0.6 0.28 300 / 20%)",
+    liveLink: "#",
+    githubLink: "#",
+  },
+  {
+    title: "tsb - The Support Button",
+    desc: "A platform to help african's creators get financial support from their fans and audience.",
+    tech: ["React", "MongoDB", "Express", "Node.Js", "Git", "Vercel", "Paystack", "Render"],
+    color: "oklch(0.6 0.28 300 / 20%)",
+    liveLink: "#",
+    githubLink: "#",
+  },
+  {
+    title: "E-commerce Cart App",
+    desc: "Full-featured shopping cart with payments and order management.",
+    tech: ["React", "Node.js", "Stripe"],
+    color: "oklch(0.7 0.2 180 / 20%)",
+    liveLink: "#",
+    githubLink: "#",
+  },
+  {
+    title: "Quiz System",
+    desc: "Custom quiz system",
+    tech: ["React", "Express", "MongoDB"],
+    color: "oklch(0.75 0.15 60 / 20%)",
+    liveLink: "#",
+    githubLink: "#",
+  },
+];
+
+// Card variants for staggered animations
+const cardVariants = {
+  hidden: { opacity: 0, y: 50, scale: 0.95 },
+  visible: (i: number) => ({
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: {
+      delay: i * 0.08,
+      duration: 0.5,
+      type: "spring",
+      stiffness: 100,
+      damping: 15,
+    },
+  }),
+  hover: {
+    y: -8,
+    scale: 1.02,
+    transition: { duration: 0.3, type: "spring", stiffness: 300 },
+  },
+};
+
+// Modal variants
+const modalVariants = {
+  hidden: { opacity: 0, scale: 0.8, y: 50 },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    y: 0,
+    transition: { duration: 0.4, type: "spring", stiffness: 200 },
+  },
+  exit: {
+    opacity: 0,
+    scale: 0.8,
+    y: 50,
+    transition: { duration: 0.3 },
+  },
+};
+
+const backdropVariants = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1, transition: { duration: 0.3 } },
+  exit: { opacity: 0, transition: { duration: 0.3 } },
+};
+
+export default function ProjectsSection() {
+  const [selected, setSelected] = useState<number | null>(null);
+
+  return (
+    <section id="projects" className="section-padding relative overflow-hidden">
+      {/* Animated background elements */}
+      <motion.div
+        className="absolute top-20 right-10 w-64 h-64 rounded-full bg-primary/5 blur-3xl"
+        animate={{
+          scale: [1, 1.2, 1],
+          opacity: [0.3, 0.6, 0.3],
+        }}
+        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+      />
+      <motion.div
+        className="absolute bottom-20 left-10 w-80 h-80 rounded-full bg-primary/5 blur-3xl"
+        animate={{
+          scale: [1, 1.3, 1],
+          opacity: [0.2, 0.5, 0.2],
+        }}
+        transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+      />
+
+      <div className="mx-auto max-w-6xl relative z-10">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-80px" }}
+          transition={{ duration: 0.6 }}
+          className="mb-14 text-center"
+        >
+          <motion.div
+            initial={{ scale: 0, opacity: 0 }}
+            whileInView={{ scale: 1, opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.4, type: "spring", stiffness: 200 }}
+            className="inline-block mb-4"
+          >
+            <div className="glass-card rounded-full px-4 py-2 inline-flex items-center gap-2">
+              <Sparkles size={14} className="text-primary" />
+              <span className="text-xs font-medium">My Work</span>
+              <Sparkles size={14} className="text-primary" />
+            </div>
+          </motion.div>
+
+          <motion.p
+            className="mb-2 text-sm font-medium tracking-widest uppercase text-primary"
+            initial={{ opacity: 0, letterSpacing: "10px" }}
+            whileInView={{ opacity: 1, letterSpacing: "2px" }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.2, duration: 0.6 }}
+          >
+            Portfolio
+          </motion.p>
+
+          <motion.h2
+            className="font-display text-3xl font-bold sm:text-4xl"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.3, duration: 0.5 }}
+          >
+            Featured <span className="text-gradient">Projects</span>
+          </motion.h2>
+        </motion.div>
+
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-2">
+          {projects.map((p, i) => (
+            <motion.div
+              key={p.title}
+              custom={i}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-50px" }}
+              variants={cardVariants}
+              whileHover="hover"
+              onClick={() => setSelected(i)}
+              className="glass-card group cursor-pointer overflow-hidden rounded-2xl transition-all duration-300 hover:glow-border relative"
+            >
+              {/* Animated gradient overlay on hover */}
+              <motion.div
+                className="absolute inset-0 bg-gradient-to-r from-primary/0 via-primary/10 to-primary/0 opacity-0 group-hover:opacity-100"
+                initial={{ x: "-100%" }}
+                whileHover={{ x: "100%" }}
+                transition={{ duration: 0.6 }}
+              />
+
+              <div
+                className="flex h-48 items-center justify-center text-6xl font-bold font-display text-foreground/20 relative overflow-hidden"
+                style={{ background: p.color }}
+              >
+                <motion.div
+                  initial={{ scale: 1 }}
+                  whileHover={{ scale: 1.1 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  {p.title.charAt(0)}
+                </motion.div>
+
+                {/* Eye icon overlay on hover */}
+                <motion.div
+                  className="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                  initial={{ backdropFilter: "blur(0px)" }}
+                  whileHover={{ backdropFilter: "blur(4px)" }}
+                >
+                  <motion.div
+                    initial={{ scale: 0, rotate: -180 }}
+                    whileHover={{ scale: 1, rotate: 0 }}
+                    transition={{ duration: 0.3, type: "spring" }}
+                    className="flex items-center gap-2 bg-primary text-white px-4 py-2 rounded-full"
+                  >
+                    <Eye size={16} />
+                    <span className="text-sm font-medium">View Project</span>
+                  </motion.div>
+                </motion.div>
+              </div>
+
+              <div className="p-6">
+                <motion.h3 className="font-display text-lg font-semibold group-hover:text-primary transition-colors">
+                  {p.title}
+                </motion.h3>
+                <p className="mt-1 text-sm text-muted-foreground line-clamp-2">{p.desc}</p>
+                <div className="mt-4 flex flex-wrap gap-2">
+                  {p.tech.slice(0, 4).map((t, idx) => (
+                    <motion.span
+                      key={t}
+                      initial={{ opacity: 0, scale: 0 }}
+                      whileInView={{ opacity: 1, scale: 1 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: i * 0.05 + idx * 0.05 }}
+                      className="rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary hover:bg-primary/20 transition-colors"
+                    >
+                      {t}
+                    </motion.span>
+                  ))}
+                  {p.tech.length > 4 && (
+                    <span className="rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
+                      +{p.tech.length - 4}
+                    </span>
+                  )}
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+
+      {/* Modal */}
+      <AnimatePresence>
+        {selected !== null && (
+          <motion.div
+            variants={backdropVariants}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+            className="fixed inset-0 z-50 flex items-center justify-center bg-background/90 px-4 backdrop-blur-md"
+            onClick={() => setSelected(null)}
+          >
+            <motion.div
+              variants={modalVariants}
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+              className="glass-card relative w-full max-w-lg rounded-2xl p-8 shadow-2xl"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Animated border */}
+              <motion.div
+                className="absolute inset-0 rounded-2xl bg-gradient-to-r from-primary/0 via-primary/30 to-primary/0"
+                animate={{ x: ["-100%", "100%"] }}
+                transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+              />
+
+              <motion.button
+                onClick={() => setSelected(null)}
+                className="absolute top-4 right-4 text-muted-foreground hover:text-foreground transition-colors z-10"
+                whileHover={{ scale: 1.1, rotate: 90 }}
+                whileTap={{ scale: 0.9 }}
+              >
+                <X size={20} />
+              </motion.button>
+
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.1 }}
+              >
+                <h3 className="font-display text-2xl font-bold text-gradient">
+                  {projects[selected].title}
+                </h3>
+              </motion.div>
+
+              <motion.p
+                className="mt-3 text-muted-foreground"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2 }}
+              >
+                {projects[selected].desc}
+              </motion.p>
+
+              <motion.div
+                className="mt-4 flex flex-wrap gap-2"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.3 }}
+              >
+                {projects[selected].tech.map((t, i) => (
+                  <motion.span
+                    key={t}
+                    initial={{ opacity: 0, scale: 0 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: 0.3 + i * 0.03 }}
+                    className="rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary"
+                  >
+                    {t}
+                  </motion.span>
+                ))}
+              </motion.div>
+
+              <motion.div
+                className="mt-6 flex gap-4"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.5 }}
+              >
+                <motion.a
+                  href={projects[selected].liveLink}
+                  className="btn-primary-glow inline-flex items-center gap-2 rounded-lg px-5 py-2.5 text-sm font-medium"
+                  whileHover={{ scale: 1.05, gap: "12px" }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  <ExternalLink size={14} /> Live Demo
+                </motion.a>
+                <motion.a
+                  href={projects[selected].githubLink}
+                  className="btn-outline-glow inline-flex items-center gap-2 rounded-lg px-5 py-2.5 text-sm font-medium"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  <Github size={14} /> GitHub
+                </motion.a>
+              </motion.div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </section>
+  );
+}
