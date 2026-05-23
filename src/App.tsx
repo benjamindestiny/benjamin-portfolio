@@ -1,3 +1,4 @@
+import GlobalBackground from './components/Background';
 import Navbar from './components/Navbar';
 import HeroSection from './components/HeroSection';
 import AboutSection from './components/AboutSection';
@@ -11,6 +12,7 @@ import Footer from './components/Footer';
 function App() {
   return (
     <div className="min-h-screen">
+      <GlobalBackground />
       <Navbar />
       <main>
         <HeroSection />

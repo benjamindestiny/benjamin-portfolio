@@ -6,7 +6,7 @@ import {
   Share2,
   Globe,
   Smartphone,
-  Figma,
+  Brush,
   Zap,
   Database,
   Rocket,
@@ -23,7 +23,7 @@ const highlights = [
   { icon: Share2, label: "Social Media", desc: "Strategy, content creation & audience growth" },
   { icon: Globe, label: "Responsive Design", desc: "Mobile-first, cross-browser compatible" },
   { icon: Smartphone, label: "Mobile Development", desc: "React Native, PWA, mobile optimization" },
-  { icon: Figma, label: "UI/UX Design", desc: "Wireframes, prototypes, user flows" },
+  { icon: Brush, label: "UI/UX Design", desc: "Wireframes, prototypes, user flows" },
   { icon: Zap, label: "Performance", desc: "Core Web Vitals, speed optimization" },
   { icon: Database, label: "Backend Basics", desc: "Node.js, MongoDB, REST APIs" },
   { icon: Rocket, label: "SEO & Analytics", desc: "Search optimization, Google Analytics" },
@@ -148,7 +148,7 @@ export default function AboutSection() {
             initial={{ opacity: 0, scale: 0.8, rotateY: 90 }}
             whileInView={{ opacity: 1, scale: 1, rotateY: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.8, type: "spring", stiffness: 100 }}
+            transition={{ duration: 0.8, stiffness: 100 }}
           >
             <div className="relative">
               {/* Glowing rings around image */}
@@ -240,7 +240,7 @@ export default function AboutSection() {
               <motion.span
                 className="text-gradient inline-block"
                 whileHover={{ scale: 1.05 }}
-                transition={{ type: "spring", stiffness: 300 }}
+                transition={{ stiffness: 300 }}
               >
                 stand out
               </motion.span>
@@ -265,7 +265,7 @@ export default function AboutSection() {
                   initial={{ opacity: 0, x: -30 }}
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
-                  transition={{ delay: i * 0.05, duration: 0.4, type: "spring", stiffness: 200 }}
+                  transition={{ delay: i * 0.05, duration: 0.4, stiffness: 200 }}
                   whileHover={{ scale: 1.02, x: 5 }}
                   className="glass-card flex items-center gap-3 rounded-xl p-3 cursor-pointer group"
                 >

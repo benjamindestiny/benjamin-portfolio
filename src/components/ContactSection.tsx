@@ -5,7 +5,6 @@ import {
   MessageCircle,
   Send,
   Sparkles,
-  ArrowRight,
   Shield,
   Lock,
   CheckCircle,
@@ -17,7 +16,7 @@ import emailjs from "@emailjs/browser";
 
 // Animated background particles
 function ContactParticles() {
-  const particles = Array.from({ length: 30 }, (_, i) => ({
+  const particles = Array.from({ length: 50 }, (_, i) => ({
     id: i,
     x: Math.random() * 100,
     y: Math.random() * 100,
@@ -39,10 +38,10 @@ function ContactParticles() {
             top: `${p.y}%`,
           }}
           animate={{
-            y: [0, -50, 0],
-            x: [0, Math.random() * 30 - 15, 0],
+            y: [0, -80, 0],
+            x: [0, Math.random() * 40 - 20, 0],
             opacity: [0, 0.6, 0],
-            scale: [1, 1.5, 1],
+            scale: [1, 2, 1],
           }}
           transition={{
             duration: p.duration,
@@ -63,12 +62,14 @@ function AnimatedGrid() {
       <svg className="absolute inset-0 h-full w-full opacity-10">
         <defs>
           <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
-            <path
+            <motion.path
               d="M 40 0 L 0 0 0 40"
               fill="none"
               stroke="currentColor"
               strokeWidth="0.5"
               className="text-primary"
+              animate={{ opacity: [0.3, 1, 0.3] }}
+              transition={{ duration: 3, repeat: Infinity }}
             />
           </pattern>
         </defs>
@@ -80,47 +81,41 @@ function AnimatedGrid() {
 
 // Floating shapes
 function FloatingShapes() {
+  const shapes = [
+    { size: "w-32 h-32", top: "top-20", left: "left-10", delay: 0, duration: 8 },
+    { size: "w-40 h-40", bottom: "bottom-20", right: "right-10", delay: 1, duration: 10 },
+    { size: "w-56 h-56", top: "top-1/2", left: "left-1/2", delay: 2, duration: 6 },
+    { size: "w-24 h-24", top: "top-1/3", right: "right-20", delay: 0.5, duration: 7 },
+    { size: "w-36 h-36", bottom: "bottom-1/3", left: "left-20", delay: 1.5, duration: 9 },
+    { size: "w-48 h-48", top: "top-3/4", right: "right-1/4", delay: 2.5, duration: 12 },
+  ];
+
   return (
     <>
-      <motion.div
-        className="absolute top-20 left-10 w-32 h-32 rounded-full bg-primary/5 blur-2xl"
-        animate={{
-          scale: [1, 1.2, 1],
-          x: [0, 20, 0],
-          y: [0, -20, 0],
-        }}
-        transition={{
-          duration: 8,
-          repeat: Infinity,
-          ease: "easeInOut",
-        }}
-      />
-      <motion.div
-        className="absolute bottom-20 right-10 w-40 h-40 rounded-full bg-primary/5 blur-2xl"
-        animate={{
-          scale: [1, 1.3, 1],
-          x: [0, -20, 0],
-          y: [0, 20, 0],
-        }}
-        transition={{
-          duration: 10,
-          repeat: Infinity,
-          ease: "easeInOut",
-          delay: 1,
-        }}
-      />
-      <motion.div
-        className="absolute top-1/2 left-1/2 w-56 h-56 rounded-full bg-primary/5 blur-3xl"
-        animate={{
-          scale: [1, 1.1, 1],
-          opacity: [0.3, 0.6, 0.3],
-        }}
-        transition={{
-          duration: 6,
-          repeat: Infinity,
-          ease: "easeInOut",
-        }}
-      />
+      {shapes.map((shape, i) => (
+        <motion.div
+          key={i}
+          className={`absolute ${shape.size} rounded-full bg-primary/5 blur-2xl`}
+          style={{
+            ...(shape.top ? { top: shape.top } : {}),
+            ...(shape.bottom ? { bottom: shape.bottom } : {}),
+            ...(shape.left ? { left: shape.left } : {}),
+            ...(shape.right ? { right: shape.right } : {}),
+          }}
+          animate={{
+            scale: [1, 1.3, 1],
+            x: [0, Math.random() * 40 - 20, 0],
+            y: [0, Math.random() * 40 - 20, 0],
+            opacity: [0.2, 0.6, 0.2],
+          }}
+          transition={{
+            duration: shape.duration,
+            repeat: Infinity,
+            ease: "easeInOut",
+            delay: shape.delay,
+          }}
+        />
+      ))}
     </>
   );
 }
@@ -132,7 +127,6 @@ export default function ContactSection() {
     type: null,
     message: "",
   });
-  const [focusedField, setFocusedField] = useState<string | null>(null);
   const sectionRef = useRef(null);
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -140,10 +134,9 @@ export default function ContactSection() {
   });
   const y = useTransform(scrollYProgress, [0, 1], [0, 50]);
 
-  // EmailJS configuration - Replace with your actual keys
-  const EMAILJS_SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID || "service_o6ok3r4";
-  const EMAILJS_TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID || "template_ylokxi8";
-  const EMAILJS_PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY || "qAU1A9HbYpNOPBf4R";
+  const EMAILJS_SERVICE_ID = process.env.REACT_APP_EMAILJS_SERVICE_ID || "service_o6ok3r4";
+  const EMAILJS_TEMPLATE_ID = process.env.REACT_APP_EMAILJS_TEMPLATE_ID || "template_ylokxi8";
+  const EMAILJS_PUBLIC_KEY = process.env.REACT_APP_EMAILJS_PUBLIC_KEY || "qAU1A9HbYpNOPBf4R";
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -151,54 +144,31 @@ export default function ContactSection() {
     setStatus({ type: null, message: "" });
 
     try {
-      const templateParams = {
-        name: form.name,
-        email: form.email,
-        details: form.details,
-      };
-
       const response = await emailjs.send(
         EMAILJS_SERVICE_ID,
         EMAILJS_TEMPLATE_ID,
-        templateParams,
-        EMAILJS_PUBLIC_KEY,
+        { name: form.name, email: form.email, details: form.details },
+        EMAILJS_PUBLIC_KEY
       );
-
       if (response.status === 200) {
-        setStatus({
-          type: "success",
-          message: "Thanks for reaching out! I'll get back to you soon.",
-        });
+        setStatus({ type: "success", message: "Thanks for reaching out! I'll get back to you soon." });
         setForm({ name: "", email: "", details: "" });
       }
-    } catch (error: any) {
-      console.error("EmailJS error:", error);
-      let errorMessage = "Something went wrong. ";
-      if (error?.status === 404) {
-        errorMessage =
-          "Email service configuration error. Please contact me directly via email or WhatsApp.";
-      } else if (error?.status === 401) {
-        errorMessage = "Invalid API key. Please check your EmailJS configuration.";
-      } else {
-        errorMessage += "Please try again or contact me directly via email/WhatsApp.";
-      }
-      setStatus({
-        type: "error",
-        message: errorMessage,
-      });
+    } catch (error) {
+      setStatus({ type: "error", message: "Something went wrong. Please try again or contact me directly." });
     } finally {
       setIsLoading(false);
       setTimeout(() => setStatus({ type: null, message: "" }), 5000);
     }
   };
 
-  // Input field variants - no crossing animations
+  // Gentle input animation (only on page load, not while typing)
   const inputVariants = {
     hidden: { opacity: 0, y: 20 },
     visible: (i: number) => ({
       opacity: 1,
       y: 0,
-      transition: { delay: i * 0.1, duration: 0.5, type: "spring" as const, stiffness: 100 },
+      transition: { delay: i * 0.1, duration: 0.5 },
     }),
   };
 
@@ -224,9 +194,13 @@ export default function ContactSection() {
             className="inline-block mb-4"
           >
             <div className="glass-card rounded-full px-4 py-2 inline-flex items-center gap-2">
-              <Sparkles size={14} className="text-primary" />
+              <motion.div animate={{ rotate: 360 }} transition={{ duration: 20, repeat: Infinity, ease: "linear" }}>
+                <Sparkles size={14} className="text-primary" />
+              </motion.div>
               <span className="text-xs font-medium">Let's Connect</span>
-              <Sparkles size={14} className="text-primary" />
+              <motion.div animate={{ rotate: -360 }} transition={{ duration: 20, repeat: Infinity, ease: "linear" }}>
+                <Sparkles size={14} className="text-primary" />
+              </motion.div>
             </div>
           </motion.div>
 
@@ -265,62 +239,27 @@ export default function ContactSection() {
           viewport={{ once: true }}
           transition={{ delay: 0.4, duration: 0.6, type: "spring" as const, stiffness: 100 }}
         >
-          <motion.form
-            onSubmit={handleSubmit}
-            className="glass-card mx-auto max-w-xl rounded-2xl p-8 relative overflow-hidden"
-            whileHover={{ boxShadow: "0 0 30px rgba(139, 92, 246, 0.2)" }}
-            transition={{ duration: 0.3 }}
-          >
-            {/* Animated background pulse instead of crossing line */}
+          <form onSubmit={handleSubmit} className="glass-card mx-auto max-w-xl rounded-2xl p-8 relative overflow-hidden">
+            {/* Animated background pulse - subtle */}
             <motion.div
               className="absolute inset-0 rounded-2xl bg-gradient-to-br from-primary/5 via-transparent to-primary/5"
-              animate={{
-                opacity: [0.3, 0.6, 0.3],
-              }}
-              transition={{
-                duration: 4,
-                repeat: Infinity,
-                ease: "easeInOut",
-              }}
+              animate={{ opacity: [0.2, 0.4, 0.2] }}
+              transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
             />
 
             {/* Name Field */}
             <div className="mb-5 relative z-10">
-              <motion.label
-                className="mb-1.5 block text-sm font-medium flex items-center gap-2"
-                htmlFor="name"
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                transition={{ delay: 0.5 }}
-              >
+              <label className="mb-1.5 block text-sm font-medium flex items-center gap-2">
                 <User size={14} className="text-primary" />
                 <span>Name</span>
-                <motion.span
-                  animate={{ opacity: [1, 0.5, 1] }}
-                  transition={{ duration: 2, repeat: Infinity }}
-                  className="text-xs text-primary"
-                >
-                  *
-                </motion.span>
-              </motion.label>
-              <motion.div
-                custom={0}
-                variants={inputVariants}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
-                animate={focusedField === "name" ? "focused" : ""}
-                transition={{ duration: 0.2 }}
-              >
+              </label>
+              <motion.div custom={0} variants={inputVariants} initial="hidden" whileInView="visible" viewport={{ once: true }}>
                 <input
-                  id="name"
                   type="text"
                   required
                   value={form.name}
-                  onFocus={() => setFocusedField("name")}
-                  onBlur={() => setFocusedField(null)}
                   onChange={(e) => setForm({ ...form, name: e.target.value })}
-                  className="w-full rounded-lg border border-border bg-input px-4 py-2.5 text-sm text-foreground placeholder-muted-foreground outline-none transition-all focus:border-primary focus:ring-2 focus:ring-primary/20"
+                  className="w-full rounded-lg bg-gray-800/50 border border-gray-700 px-4 py-3 text-white placeholder-gray-400 focus:border-primary focus:ring-2 focus:ring-primary/50 transition-all outline-none"
                   placeholder="Your name"
                 />
               </motion.div>
@@ -328,82 +267,46 @@ export default function ContactSection() {
 
             {/* Email Field */}
             <div className="mb-5 relative z-10">
-              <motion.label
-                className="mb-1.5 block text-sm font-medium flex items-center gap-2"
-                htmlFor="email"
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                transition={{ delay: 0.6 }}
-              >
+              <label className="mb-1.5 block text-sm font-medium flex items-center gap-2">
                 <AtSign size={14} className="text-primary" />
                 <span>Email</span>
-                <Lock size={12} className="text-muted-foreground" />
-              </motion.label>
-              <motion.div
-                custom={1}
-                variants={inputVariants}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
-                animate={focusedField === "email" ? "focused" : ""}
-                transition={{ duration: 0.2 }}
-              >
+              </label>
+              <motion.div custom={1} variants={inputVariants} initial="hidden" whileInView="visible" viewport={{ once: true }}>
                 <input
-                  id="email"
                   type="email"
                   required
                   value={form.email}
-                  onFocus={() => setFocusedField("email")}
-                  onBlur={() => setFocusedField(null)}
                   onChange={(e) => setForm({ ...form, email: e.target.value })}
-                  className="w-full rounded-lg border border-border bg-input px-4 py-2.5 text-sm text-foreground placeholder-muted-foreground outline-none transition-all focus:border-primary focus:ring-2 focus:ring-primary/20"
+                  className="w-full rounded-lg bg-gray-800/50 border border-gray-700 px-4 py-3 text-white placeholder-gray-400 focus:border-primary focus:ring-2 focus:ring-primary/50 transition-all outline-none"
                   placeholder="you@email.com"
                 />
               </motion.div>
             </div>
 
-            {/* Details Field - No crossing animation */}
+            {/* Details Field - No moving animation */}
             <div className="mb-6 relative z-10">
-              <motion.label
-                className="mb-1.5 block text-sm font-medium flex items-center gap-2"
-                htmlFor="details"
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                transition={{ delay: 0.7 }}
-              >
+              <label className="mb-1.5 block text-sm font-medium flex items-center gap-2">
                 <FileText size={14} className="text-primary" />
                 <span>Project Details</span>
-              </motion.label>
-              <motion.div
-                custom={2}
-                variants={inputVariants}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
-              >
+              </label>
+              <motion.div custom={2} variants={inputVariants} initial="hidden" whileInView="visible" viewport={{ once: true }}>
                 <textarea
-                  id="details"
                   rows={5}
                   required
                   value={form.details}
                   onChange={(e) => setForm({ ...form, details: e.target.value })}
-                  className="w-full rounded-lg border border-border bg-input px-4 py-2.5 text-sm text-foreground placeholder-muted-foreground outline-none transition-all focus:border-primary focus:ring-2 focus:ring-primary/20 resize-none"
+                  className="w-full rounded-lg bg-gray-800/50 border border-gray-700 px-4 py-3 text-white placeholder-gray-400 focus:border-primary focus:ring-2 focus:ring-primary/50 transition-all outline-none resize-none"
                   placeholder="Tell me about your project..."
                 />
               </motion.div>
             </div>
 
-            {/* Status Message with animation */}
+            {/* Status Message */}
             {status.message && (
               <motion.div
-                initial={{ opacity: 0, y: -20, scale: 0.9 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                exit={{ opacity: 0, y: -20 }}
-                className={`mb-4 rounded-lg p-3 text-sm flex items-center gap-2 ${
-                  status.type === "success"
-                    ? "bg-green-500/10 text-green-500 border border-green-500/20"
-                    : "bg-red-500/10 text-red-500 border border-red-500/20"
-                }`}
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className={`mb-4 rounded-lg p-3 text-sm flex items-center gap-2 ${status.type === "success" ? "bg-green-500/20 text-green-400 border border-green-500/30" : "bg-red-500/20 text-red-400 border border-red-500/30"}`}
               >
                 {status.type === "success" ? <CheckCircle size={16} /> : <Shield size={16} />}
                 {status.message}
@@ -417,10 +320,6 @@ export default function ContactSection() {
               className="btn-primary-glow flex w-full items-center justify-center gap-2 rounded-xl py-3 text-sm font-semibold relative overflow-hidden group"
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.8, duration: 0.5 }}
             >
               <motion.span
                 className="absolute inset-0 bg-gradient-to-r from-primary/0 via-primary/30 to-primary/0"
@@ -428,77 +327,26 @@ export default function ContactSection() {
                 transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
               />
               {isLoading ? (
-                <motion.div
-                  animate={{ rotate: 360 }}
-                  transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-                >
+                <motion.div animate={{ rotate: 360 }} transition={{ duration: 1, repeat: Infinity }}>
                   <Send size={16} />
                 </motion.div>
               ) : (
                 <>
                   <Send size={16} /> Get a Quote
-                  <motion.span
-                    animate={{ x: [0, 5, 0] }}
-                    transition={{ duration: 1.5, repeat: Infinity }}
-                  >
-                    <ArrowRight size={14} />
-                  </motion.span>
                 </>
               )}
             </motion.button>
 
             {/* Alternative contact methods */}
-            <motion.div
-              className="mt-6 flex items-center justify-center gap-6 text-sm text-muted-foreground"
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.9, duration: 0.5 }}
-            >
-              <motion.a
-                href="mailto:benjamindestiny449@gmail.com"
-                className="inline-flex items-center gap-1.5 transition-colors hover:text-foreground group"
-                whileHover={{ scale: 1.05, y: -2 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <Mail size={14} className="group-hover:text-primary transition-colors" />
-                <span>Benjamin Bright</span>
-              </motion.a>
-              <motion.a
-                href="https://wa.me/2347017153753"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 transition-colors hover:text-foreground group"
-                whileHover={{ scale: 1.05, y: -2 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <MessageCircle size={14} className="group-hover:text-primary transition-colors" />
-                <span>WhatsApp</span>
-              </motion.a>
-            </motion.div>
-
-            {/* Security badge with animated shield */}
-            <motion.div
-              className="mt-6 text-center"
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{ delay: 1, duration: 0.5 }}
-            >
-              <motion.div
-                className="inline-flex items-center gap-1 text-[10px] text-muted-foreground"
-                whileHover={{ scale: 1.05 }}
-              >
-                <motion.div
-                  animate={{ rotate: [0, 10, -10, 0] }}
-                  transition={{ duration: 2, repeat: Infinity }}
-                >
-                  <Shield size={10} />
-                </motion.div>
-                <span>Your information is secure and will not be shared</span>
-              </motion.div>
-            </motion.div>
-          </motion.form>
+            <div className="mt-6 flex items-center justify-center gap-6 text-sm text-muted-foreground">
+              <a href="mailto:benjamindestiny449@gmail.com" className="inline-flex items-center gap-1.5 hover:text-primary transition-colors">
+                <Mail size={14} /> Benjamin Bright
+              </a>
+              <a href="https://wa.me/2347017153753" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 hover:text-primary transition-colors">
+                <MessageCircle size={14} /> WhatsApp
+              </a>
+            </div>
+          </form>
         </motion.div>
       </div>
     </section>

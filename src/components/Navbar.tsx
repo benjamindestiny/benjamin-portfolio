@@ -72,7 +72,7 @@ export default function Navbar() {
   const logoVariants = {
     hover: {
       scale: 1.05,
-      transition: { type: "spring", stiffness: 300 },
+      transition: { stiffness: 300 },
     },
     tap: { scale: 0.95 },
   };
@@ -90,7 +90,7 @@ export default function Navbar() {
       <motion.nav
         initial={{ y: -100 }}
         animate={{ y: 0 }}
-        transition={{ duration: 0.6, type: "spring", stiffness: 100, damping: 20 }}
+        transition={{ duration: 0.6, stiffness: 100, damping: 20 }}
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
           scrolled ? "glass-card py-3 shadow-lg border-b border-primary/10" : "bg-transparent py-5"
         }`}
@@ -185,7 +185,7 @@ export default function Navbar() {
               onClick={(e) => handleClick(e, "#contact")}
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.3, duration: 0.4, type: "spring" }}
+              transition={{ delay: 0.3, duration: 0.4 }}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.98 }}
             >
@@ -240,7 +240,7 @@ export default function Navbar() {
               initial={{ opacity: 0, height: 0, y: -20 }}
               animate={{ opacity: 1, height: "auto", y: 0 }}
               exit={{ opacity: 0, height: 0, y: -20 }}
-              transition={{ duration: 0.4, type: "spring", stiffness: 200 }}
+              transition={{ duration: 0.4, stiffness: 200 }}
               className="glass-card mt-2 overflow-hidden md:hidden mx-4 rounded-xl"
             >
               <div className="flex flex-col gap-2 px-4 py-6">

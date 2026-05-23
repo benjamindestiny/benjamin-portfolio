@@ -1,13 +1,13 @@
 import { motion } from "framer-motion";
 import {
   Code2,
-  Figma,
   Globe,
   Layers,
   Palette,
   Smartphone,
   TrendingUp,
   Zap,
+  Brush,
   Database,
   Server,
   Cloud,
@@ -50,7 +50,7 @@ const skills = [
     category: "design",
   },
   {
-    icon: Figma,
+    icon: Brush,
     title: "UI/UX Design",
     desc: "Wireframes, prototypes, user flows, testing",
     category: "design",
@@ -212,7 +212,7 @@ const skills = [
 
 const topSkills = [
   { icon: Code2, title: "Frontend Development", desc: "React, Next.js, TypeScript, Tailwind CSS" },
-  { icon: Figma, title: "UI/UX Design", desc: "Wireframes, prototypes, user research, Figma" },
+  { icon: Brush, title: "UI/UX Design", desc: "Wireframes, prototypes, user research, Brush" },
   { icon: Palette, title: "Graphic Design", desc: "Brand identity, logos, social media graphics" },
   { icon: Server, title: "Backend Development", desc: "Node.js, Express, MongoDB, PostgreSQL" },
   { icon: Cloud, title: "Cloud & Deployment", desc: "AWS, Vercel, Netlify, Railway" },

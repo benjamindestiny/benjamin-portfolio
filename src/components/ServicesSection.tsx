@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { Brush } from "lucide-react";
 import { Code2, Paintbrush, Share2, Sparkles, ArrowRight } from "lucide-react";
 
 const services = [
@@ -13,7 +14,7 @@ const services = [
     icon: Paintbrush,
     title: "UI/UX Design",
     desc: "User-centered designs that look beautiful and convert visitors into customers.",
-    features: ["Figma", "Wireframes", "Prototypes", "User Testing"],
+    features: ["Brush", "Wireframes", "Prototypes", "User Testing"],
     gradient: "from-purple-500/20 to-pink-500/20",
   },
   {
@@ -48,7 +49,7 @@ const cardVariants = {
     transition: {
       delay: i * 0.15,
       duration: 0.6,
-      type: "spring" as const,
+      
       stiffness: 100,
       damping: 15,
     },
@@ -56,7 +57,7 @@ const cardVariants = {
   hover: {
     y: -12,
     scale: 1.02,
-    transition: { duration: 0.3, type: "spring" as const, stiffness: 300 },
+    transition: { duration: 0.3, stiffness: 300 },
   },
 };
 
@@ -64,7 +65,7 @@ const iconVariants = {
   hover: {
     rotate: 360,
     scale: 1.1,
-    transition: { duration: 0.5, type: "spring" as const, stiffness: 200 },
+    transition: { duration: 0.5, stiffness: 200 },
   },
 };
 
@@ -101,7 +102,7 @@ export default function ServicesSection() {
             initial={{ scale: 0, opacity: 0 }}
             whileInView={{ scale: 1, opacity: 1 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.4, type: "spring" as const, stiffness: 200 }}
+            transition={{ duration: 0.4, stiffness: 200 }}
             className="inline-block mb-4"
           >
             <div className="glass-card rounded-full px-4 py-2 inline-flex items-center gap-2">
