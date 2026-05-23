@@ -1,4 +1,4 @@
-import GlobalBackground from "./components/GlobalBackground";
+import GlobalBackground from "./components/Background";
 import Navbar from "./components/Navbar";
 import HeroSection from "./components/HeroSection";
 import AboutSection from "./components/AboutSection";
